@@ -13,7 +13,7 @@ import adopt_me2.model.Pet;
 
 
 /**
- * 
+ * responsible for displaying the information from the model classes
  */
 public class Pet_View {
     private JFrame backFrame;
@@ -23,39 +23,37 @@ public class Pet_View {
     private JComboBox<String> comboBoxSort;
 
     /**
-     * 
-     * creates table for window 
+     * making the pet_view, and initializing all of the UI
+     * laying the UI in frame
      */
     public Pet_View() {
 
+    		//init the window
         backFrame = new JFrame("Adopt Me - Pet Adoption System");
         backFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         backFrame.setSize(1000, 1000);
         backFrame.setLayout(new BorderLayout());
-
-        //creates table
+        	//creating the table with columns of attributes
         String[] columnNames = {"ID", "Name", "Type", "Species", "Age", "Adopted"};
         tableModel = new DefaultTableModel(columnNames, 0);
         petsTable = new JTable(tableModel);
         JScrollPane scrollPane = new JScrollPane(petsTable);
         backFrame.add(scrollPane, BorderLayout.CENTER);
-
-
+        	//making a panel that will be our bottom
         JPanel panel = new JPanel();
         panel.setLayout(new FlowLayout());
-
-        //creates button objects
+        	//making the buttons for operations
         addButton = new JButton("Add");
         removeButton = new JButton("Remove");
         adoptButton = new JButton("Adopt");
         detailsButton = new JButton("View Details");
         saveButton = new JButton("Save");
 
-
+        	//combo box for sorting
         JLabel sortLabel = new JLabel("Sort by:");
         comboBoxSort = new JComboBox<>(new String[]{"Name", "Age", "Species"});
 
-        //adds buttons to panel
+        	//adds buttons to panel
         panel.add(addButton);
         panel.add(removeButton);
         panel.add(adoptButton);
@@ -63,8 +61,7 @@ public class Pet_View {
         panel.add(sortLabel);
         panel.add(comboBoxSort);
         panel.add(saveButton);
-
-
+        	//placing the frame at the bottom of the frame
         backFrame.add(panel, BorderLayout.SOUTH);
     }
     //makes window visible
@@ -75,17 +72,16 @@ public class Pet_View {
     {
         backFrame.setVisible(true);
     }
-    //method for updating pet Table
     /**
+     * method for updating pet Table
      * updates data in the window
      * @param pets
+     * 				pets turns into a list
      */
     public void updatePetTable(List<Pet> pets) 
     {
-
+    		//removing old rows
         tableModel.setRowCount(0);
-
-
         for (int i = 0; i < pets.size(); i++) 
         {	
         	Pet pet = pets.get(i);
@@ -112,7 +108,7 @@ public class Pet_View {
     //Action listeners to give buttons functionality 
     /**
      * 
-     * adds buttons
+     * linking an actionlistener to the addbutton
      * 
      * @param listener
      */
@@ -121,7 +117,7 @@ public class Pet_View {
     }
 
     /**
-     * 
+     * linking an actionlistener to the removebutton
      * @param listener
      */
     public void setRemoveButtonListener(ActionListener listener) {
@@ -129,6 +125,7 @@ public class Pet_View {
     }
 
     /**
+     * linking an actionlistener to the adoptbutton
      * @param listener
      */
     public void setAdoptButtonListener(ActionListener listener) {
@@ -136,6 +133,7 @@ public class Pet_View {
     }
 
     /**
+     * linking an actionlistener to the detaisbutton
      * @param listener
      */
     public void setDetailsButtonListener(ActionListener listener) {
@@ -143,6 +141,7 @@ public class Pet_View {
     }
 
     /**
+     * linking an actionlistener to the savebutton
      * @param listener
      */
     public void setSaveButtonListener(ActionListener listener) {
@@ -150,16 +149,17 @@ public class Pet_View {
     }
 
     /**
+     * linking an actionlistener to the combosortbox
      * @param listener
      */
     public void setSortComboBoxListener(ActionListener listener) {
         comboBoxSort.addActionListener(listener);
     }
-    //method for getting pet id
     /**
-     * 
+     * method for getting pet id
      * returns id of the pet
      * @return
+     * 			returns either the id of the pet on success or -1 on failure
      */
     public int getSelectedPetId() 
     {
@@ -170,10 +170,8 @@ public class Pet_View {
         }
         return -1;
     }
-    //returns the selected row
     /**
-     * 
-     * 
+     * returns the selected row
      * returns selected row
      * @return
      */
@@ -181,9 +179,8 @@ public class Pet_View {
     {
         return petsTable.getSelectedRow();
     }
-    //returns sorted items
     /**
-     * 
+     * returns sorted items
      * shorts and returns requested criteria
      * @return
      */
@@ -192,9 +189,8 @@ public class Pet_View {
         return (String) comboBoxSort.getSelectedItem();
     }
 
-    //returns message
     /**
-     * 
+     * returns message
      * displays messages
      * @param message
      */
@@ -202,12 +198,12 @@ public class Pet_View {
     {
         JOptionPane.showMessageDialog(backFrame, message);
     }
-    //prints text into window view
     /**
-     * 
-     * 
+     * prints text into window view
      * adds dialog to view
+     * opens a dialog that prompts the user to enter new information for a pet
      * @return
+     * 			returns pet fields on success or null on cancel
      */
     public String[] showAddDialog() 
     {
@@ -226,8 +222,7 @@ public class Pet_View {
         panel.add(new JLabel("Age:"));
         panel.add(ageField);
 
-        int result = JOptionPane.showConfirmDialog(backFrame, panel, 
-                "Add New Pet", JOptionPane.OK_CANCEL_OPTION);
+        int result = JOptionPane.showConfirmDialog(backFrame, panel, "Add New Pet", JOptionPane.OK_CANCEL_OPTION);
         if (result == JOptionPane.OK_OPTION) 
         {
             return new String[]{
@@ -239,11 +234,11 @@ public class Pet_View {
         }
         return null;
     }
-    //prints information about pets
     /**
-     * 
+     * prints information about pets
      * shows details of requested pet
      * @param pet
+     * 				pet param is the pet that's details is displayed
      */
     public void showPetDetailsDialog(Pet pet) 
     {
