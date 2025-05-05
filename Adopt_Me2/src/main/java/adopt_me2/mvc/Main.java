@@ -8,17 +8,20 @@ import adopt_me2.view.Pet_View;
 
 public class Main {
 	public static void main(String[] args) {
-        	SwingUtilities.invokeLater(new Runnable() {
-			
-            	@Override
-            	public void run() {
-                
-               		PetModel model = new PetModel();
-                	PetView view = new PetView();
-                	new PetController(model, view);
 
-                	view.display();
-            	}
+        SwingUtilities.invokeLater(new Runnable() 
+        {
+        	
+            @Override
+            public void run() 
+            {
+
+                Pet_Model model = new Pet_Model();
+                Pet_View view = new Pet_View();
+                new Pet_Controller(model, view);
+
+                view.display();
+            }
         });
     }
 }
