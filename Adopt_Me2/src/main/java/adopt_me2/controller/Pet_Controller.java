@@ -1,69 +1,184 @@
 package adopt_me2.controller;
 
-import adopt_me2.model.PetInformationModel;
-import adopt_me2.model.Pet_Model;
-import adopt_me2.view.Pet_List_View;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import adopt_me2.model.*;
 import adopt_me2.view.Pet_View;
 
 public class Pet_Controller {
+    private Pet_Model model;
+    private Pet_View view;
+    private int randomId;
 
-	private Pet_Model petContainerModel;
-	private Pet_View pet_View;
-	private Pet_List_View petList;
-	
-	
-	public Pet_Controller(Pet_Model petContainerModell, Pet_View pet_View) {
-		// TODO Auto-generated constructor stub
-		
-		this.pet_View = pet_View;
-		this.petContainerModel = petContainerModel;
-		this.pet_View.addActionListenerToSubmitButton(new SubmitButtonActionListener());;
-	}
+    public Pet_Controller(Pet_Model model, Pet_View view) {
+        this.model = model;
+        this.view = view;
+        this.randomId = petIdSelection();
 
+        updateTable();
+        attachListeners();
+    }
 
-	public void initiate() {
-		pet_View.setVisible(true);
-	}
-	
-	private class SubmitButtonActionListener implements ActionListener {
+    private int petIdSelection() 
+    {
+    	return java.util.concurrent.ThreadLocalRandom.current().nextInt(1, 501);
+    }
 
-		@Override
-		public void actionPerformed(ActionEvent e) {
-//			userModel.setUsername(userInputView.getUserName());
-//			userModel.setAge(userInputView.getUserAge());
-			PetInformationModel user = new PetInformationModel(pet_View.getPetName(), pet_View.getPetAge());
-			Pet_Model.getUserList().add(user);
-			System.out.println(petContainerModel.getPetList());
-			petList.getUserList().addElement(user);
-			petList.setVisible(true);
-			
-		}
-		
-	}
-	
-	private class DeleteUserButtonActionListener implements ActionListener {
+    private void updateTable() 
+    {
+        view.updatePetTable(model.getAllPets());
+    }
 
-		@Override
-		public void actionPerformed(ActionEvent e) {
-//			int selectedUserIndex = userListView.getSelectedUser();
-			int[] multipleSelectedUserIndicies = pet_List_View.getMultipleSelectedUser();
-			List<PetInformationModel> userList = new ArrayList<>();
-			for(int i=0; i<multipleSelectedUserIndicies.length; i++) {
-				userList.add(petList.getUserList().get(multipleSelectedUserIndicies[i]));
-			}
-			
-			for(PetInformationModel user : userList) {
-				petList.getUserList().removeElement(user);
-				petContainerModel.getUserList().remove(user);
-			}
-			
-			for(petInformationModel user : petContainerModel.getUserList()) {
-				System.out.println("User: " + user);
-			}
-		}
-		
-	}
-
-}
-
+    private void attachListeners() 
+    {
+        view.setAddButtonListener(new ActionListener() 
+        {
+        	
+            @Override
+            public void actionPerformed(ActionEvent e) 
+            {
+                String[] petData = view.showAddDialog();
+                if (petData != null) {
+                    String name = petData[0];
+                    String type = petData[1];
+                    String species = petData[2];
+                    int age = Integer.parseInt(petData[3]);
+                    
+                    Pet newPet;
+                    switch (type) {
+                        case "Dog":
+                            newPet = new Dog(randomId, name, species, age);
+                            break;
+                        case "Cat":
+                            newPet = new Cat(randomId, name, species, age);
+                            break;
+                        case "Rabbit":
+                            newPet = new Rabbit(randomId, name, species, age);
+                            break;
+                        default:
+                            return;
+                    }
+                    
+                    model.addPet(newPet);
+                    randomId++;
+                    updateTable();
+                }
+            }
+        });
+        
+        view.setRemoveButtonListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) 
+            {
+                int selectedRow = view.getSelectedRow();
+                int id = view.getSelectedPetId();
+                if (id != -1) 
+                {
+                    // Pass both ID and table row index to ensure exact match
+                    model.removePet(id, selectedRow);
+                    updateTable();
+                } 
+                else 
+                {
+                    view.showMessage("Please Select a Pet First");
+                }
+            }
+        });
+        
+        view.setAdoptButtonListener(new ActionListener() 
+        {
+            @Override
+            public void actionPerformed(ActionEvent e) 
+            {
+                int selectedRow = view.getSelectedRow();
+                int id = view.getSelectedPetId();
+                if (id != -1) 
+                {
+                    Pet pet = model.getPetByRowIndex(selectedRow);
+                    if (pet != null) 
+                    {
+                        if (pet.isAdopted()) 
+                        {
+                            view.showMessage("This Pet has an Owner Already");
+                        } 
+                        else 
+                        {
+                            model.adoptPet(pet);
+                            updateTable();
+                            view.showMessage("You're Now a proud owner of " + pet.getName() + "!");
+                        }
+                    } 
+                    else 
+                    {
+                        view.showMessage("Couldn't Find Pet to Adopt");
+                    }
+                } 
+                else 
+                {
+                    view.showMessage("Please Select a Pet First");
+                }
+            }
+        });
+        
+        view.setDetailsButtonListener(new ActionListener() 
+        {
+        	
+            @Override
+            public void actionPerformed(ActionEvent e) 
+            {
+                int selectedRow = view.getSelectedRow();
+                int id = view.getSelectedPetId();
+                if (id != -1) 
+                {
+                    Pet pet = model.getPetByRowIndex(selectedRow);
+                    if (pet != null) 
+                    {
+                        view.showPetDetailsDialog(pet);
+                    } 
+                    else 
+                    {
+                        view.showMessage("Couldn't Find a Pet");
+                    }
+                } 
+                else 
+                {
+                    view.showMessage("Please Select a Pet First");
+                }
+            }
+        });
+        
+        view.setSaveButtonListener(new ActionListener() 
+        {
+        	
+            @Override
+            public void actionPerformed(ActionEvent e) 
+            {
+                model.savePets();
+                view.showMessage("Save Successful");
+            }
+        });
+        
+        view.setSortComboBoxListener(new ActionListener() 
+        {
+            @Override
+            public void actionPerformed(ActionEvent e) 
+            {
+                String required = view.getSelectedSortCriteria();
+                switch (required) 
+                {
+                    case "Name":
+                        model.sortPetsByName();
+                        break;
+                    case "Age":
+                        model.sortPetsByAge();
+                        break;
+                    case "Species":
+                        model.sortPetsBySpecies();
+                        break;
+                }
+                updateTable();
+            }
+        });
+    }
 }
