@@ -7,7 +7,7 @@ import adopt_me2.model.*;
 import adopt_me2.view.Pet_View;
 
 /**
- * 
+ * manages interactions between petmodel and petview
  */
 public class Pet_Controller {
     private Pet_Model model;
@@ -49,7 +49,8 @@ public class Pet_Controller {
     }
 
     /**
-     * give buttons functionality
+     * give buttons functionality to add new pet entries
+     * user adds details about the pet 
      */
     private void attachListeners() 
     {
@@ -95,6 +96,7 @@ public class Pet_Controller {
         
         view.setRemoveButtonListener(new ActionListener() {
             /**
+            *adds functionality to remove pet from the pet list
              * @param e
              */
             @Override
@@ -118,7 +120,8 @@ public class Pet_Controller {
         view.setAdoptButtonListener(new ActionListener() 
         {
             /**
-             * 
+             * adds functionality to the adopt button so users can
+             * adopt the desired pet they want
              * event listener
              * @param e
              */
@@ -159,6 +162,7 @@ public class Pet_Controller {
         {
         	
             /**
+            * adds fuctionality for user can view details for selected pet
              * @param e
              */
             @Override
@@ -189,7 +193,7 @@ public class Pet_Controller {
         {
         	
             /**
-             *
+             * adds button fuctionality so user can save pet table
              */
             @Override
             public void actionPerformed(ActionEvent e) 
@@ -202,7 +206,8 @@ public class Pet_Controller {
         view.setSortComboBoxListener(new ActionListener() 
         {
             /**
-             *
+             * adds functionality to buttons
+             * so user can sort pets by desired critiria
              */
             @Override
             public void actionPerformed(ActionEvent e) 
