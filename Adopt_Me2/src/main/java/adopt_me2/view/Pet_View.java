@@ -11,9 +11,7 @@ import javax.swing.table.DefaultTableModel;
 
 import adopt_me2.model.Pet;
 
-/**
- * 
- */
+
 public class Pet_View {
     private JFrame backFrame;
     private JTable petsTable;
@@ -23,6 +21,7 @@ public class Pet_View {
 
     /**
      * 
+     * creates table for window 
      */
     public Pet_View() {
 
@@ -67,7 +66,7 @@ public class Pet_View {
     }
     //makes window visible
     /**
-     * 
+     * makes the window visible 
      */
     public void display() 
     {
@@ -75,6 +74,7 @@ public class Pet_View {
     }
     //method for updating pet Table
     /**
+     * updates data in the window
      * @param pets
      */
     public void updatePetTable(List<Pet> pets) 
@@ -108,6 +108,9 @@ public class Pet_View {
     }
     //Action listeners to give buttons functionality 
     /**
+     * 
+     * adds buttons
+     * 
      * @param listener
      */
     public void setAddButtonListener(ActionListener listener) {
@@ -115,6 +118,7 @@ public class Pet_View {
     }
 
     /**
+     * 
      * @param listener
      */
     public void setRemoveButtonListener(ActionListener listener) {
@@ -150,6 +154,8 @@ public class Pet_View {
     }
     //method for getting pet id
     /**
+     * 
+     * returns id of the pet
      * @return
      */
     public int getSelectedPetId() 
@@ -163,6 +169,9 @@ public class Pet_View {
     }
     //returns the selected row
     /**
+     * 
+     * 
+     * returns selected row
      * @return
      */
     public int getSelectedRow() 
@@ -171,6 +180,8 @@ public class Pet_View {
     }
     //returns sorted items
     /**
+     * 
+     * shorts and returns requested criteria
      * @return
      */
     public String getSelectedSortCriteria() 
@@ -180,6 +191,8 @@ public class Pet_View {
 
     //returns message
     /**
+     * 
+     * displays messages
      * @param message
      */
     public void showMessage(String message) 
@@ -188,6 +201,9 @@ public class Pet_View {
     }
     //prints text into window view
     /**
+     * 
+     * 
+     * adds dialog to view
      * @return
      */
     public String[] showAddDialog() 
@@ -222,6 +238,8 @@ public class Pet_View {
     }
     //prints information about pets
     /**
+     * 
+     * shows details of requested pet
      * @param pet
      */
     public void showPetDetailsDialog(Pet pet) 

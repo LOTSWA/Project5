@@ -6,11 +6,21 @@ import java.awt.event.ActionListener;
 import adopt_me2.model.*;
 import adopt_me2.view.Pet_View;
 
+/**
+ * 
+ */
 public class Pet_Controller {
     private Pet_Model model;
     private Pet_View view;
     private int randomId;
 
+    /**
+     * 
+     * 
+     * updates table with pet data
+     * @param model
+     * @param view
+     */
     public Pet_Controller(Pet_Model model, Pet_View view) {
         this.model = model;
         this.view = view;
@@ -20,21 +30,37 @@ public class Pet_Controller {
         attachListeners();
     }
 
+    /**
+     * 
+     * selects pet ID
+     * @return
+     */
     private int petIdSelection() 
     {
     	return java.util.concurrent.ThreadLocalRandom.current().nextInt(1, 501);
     }
 
+    /**
+     * updates pet table
+     */
     private void updateTable() 
     {
         view.updatePetTable(model.getAllPets());
     }
 
+    /**
+     * give buttons functionality
+     */
     private void attachListeners() 
     {
         view.setAddButtonListener(new ActionListener() 
         {
         	
+            /**
+             * 
+             * 
+             * @param e
+             */
             @Override
             public void actionPerformed(ActionEvent e) 
             {
@@ -68,6 +94,9 @@ public class Pet_Controller {
         });
         
         view.setRemoveButtonListener(new ActionListener() {
+            /**
+             * @param e
+             */
             @Override
             public void actionPerformed(ActionEvent e) 
             {
@@ -88,6 +117,11 @@ public class Pet_Controller {
         
         view.setAdoptButtonListener(new ActionListener() 
         {
+            /**
+             * 
+             * event listener
+             * @param e
+             */
             @Override
             public void actionPerformed(ActionEvent e) 
             {
@@ -124,6 +158,9 @@ public class Pet_Controller {
         view.setDetailsButtonListener(new ActionListener() 
         {
         	
+            /**
+             * @param e
+             */
             @Override
             public void actionPerformed(ActionEvent e) 
             {
@@ -151,6 +188,9 @@ public class Pet_Controller {
         view.setSaveButtonListener(new ActionListener() 
         {
         	
+            /**
+             *
+             */
             @Override
             public void actionPerformed(ActionEvent e) 
             {
@@ -161,6 +201,9 @@ public class Pet_Controller {
         
         view.setSortComboBoxListener(new ActionListener() 
         {
+            /**
+             *
+             */
             @Override
             public void actionPerformed(ActionEvent e) 
             {
