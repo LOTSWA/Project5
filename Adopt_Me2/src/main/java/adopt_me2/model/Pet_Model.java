@@ -11,25 +11,42 @@ import java.lang.reflect.Type;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+/**
+ * pet model class is responsible for the model part in the MVC
+ * managing the converting the json files into readable data that is
+ * converted into pet data for the functions to read and use
+ * handling both regular pets and exotic pets, exporting into a single pet file
+ */
 public class Pet_Model {
     private Shelter<Pet> shelter;
+    	//gson is responsible to serialize and deserialize
     private Gson gson;
     private static final String petsFd = "src/main/resources/pets.json";
     private static final String ePetsFd = "src/main/resources/exotic_animals.json";
-
+    /**
+     * makes a pet model instance that inits the shelter and
+     * configures the gson object, using pretty printing for better practice
+     * also loading the pet data from the json files
+     */
     public Pet_Model() {
         shelter = new Shelter<>();
         gson = new GsonBuilder().setPrettyPrinting().create();
         loadPets();
     }
-
+    /**
+     * loads the pets from the json files and places
+     * them into the shelter hopefully
+     * reading all json files to use
+     * uses the adapter for exotic animals
+     */
     private void loadPets() {
         try {
-
+        		//loading regular pet file
             Reader reader = new FileReader(petsFd);
             Type listType = new TypeToken<List<Map<String, Object>>>(){}.getType();
+            	//had to use mapping in order to serialize and deserialize, it was
+            	//the best solution i could find online
             List<Map<String, Object>> petsData = gson.fromJson(reader, listType);
-            
             if (petsData != null) 
             {
                 for (int i = 0; i < petsData.size(); i++) 
@@ -62,7 +79,7 @@ public class Pet_Model {
             }
             reader.close();
             
-            
+            	//loading the exotic pet file
             reader = new FileReader(ePetsFd);
             listType = new TypeToken<List<Map<String, Object>>>(){}.getType();
             List<Map<String, Object>> exoticPetData = gson.fromJson(reader, listType);
@@ -91,7 +108,10 @@ public class Pet_Model {
             System.err.println("Error occured with reading the file" + e.getMessage());
         }
     }
-
+    /**
+     * saves all the pets in the shelter to a new json file that combines the exotic and normal
+     * using a time stamp of the specified layout to tell the time of when we saved it
+     */
     public void savePets() {
         try {
             
@@ -137,22 +157,43 @@ public class Pet_Model {
             System.err.println("Error occured with reading the file" + e.getMessage());
         }
     }
-
+    /**
+     * shelter that has all pets
+     * @return
+     * 			returns the well shelter of pets
+     */
     public Shelter<Pet> getShelter() 
     {
         return shelter;
     }
-
+    /**
+     * adds a new pet to the shelter
+     * @param pet
+     * 			pet is added to shelter
+     */
     public void addPet(Pet pet) 
     {
         shelter.addPet(pet);
     }
-
+    /**
+     * removes a pet from the shelter
+     * @param pet
+     * 				pet is to be removed from shelter
+     */
     public void removePet(Pet pet) 
     {
         shelter.removePet(pet);
     }
-    
+    /**
+     * i first tried to use boolean then went to public void,
+     * i was super confused on this tbh
+     *(got complicated) tries to remove a pet by both id and row
+     * index, and if it fails it goes to finding id yet again
+     * @param id
+     * 			id of the pet to be removes
+     * @param rowIndex
+     * 				row index of the pet within the table
+     */
     public void removePet(int id, int rowIndex) 
     {
         List<Pet> allPets = getAllPets();
@@ -173,7 +214,14 @@ public class Pet_Model {
             }
         }
     }
-    
+    /**
+     * gets the pet by its row index in the table
+     * part of the complicated process
+     * @param rowIndex
+     * 				index of the pet
+     * @return
+     * 			returns either the pet or null showing failure
+     */
     public Pet getPetByRowIndex(int rowIndex) {
         List<Pet> allPets = getAllPets();
         if (rowIndex >= 0 && rowIndex < allPets.size()) {
@@ -181,19 +229,40 @@ public class Pet_Model {
         }
         return null;
     }
-    
+    /**
+     * returns a pet based on the id
+     * @param id
+     * 			id is the id of the pet
+     * @return
+     */
     public Pet getPet(int id) {
         return shelter.getPet(id);
     }
-
+    /**
+     * returns a list of the pets within the shelter
+     * @return
+     */
     public List<Pet> getAllPets() {
         return shelter.getAllPets();
     }
-
+    /**
+     * marks a pet as adopted based off the id
+     * @param id
+     * 			id of the pet that will be adopted
+     * @return
+     * 			returning true if the pet is adopted and false if not
+     */
     public boolean adoptPet(int id) {
         return shelter.adoptPet(id);
     }
-    
+    /**
+     * marks a pet as adopted again
+     * (got complicated and this was the fix)
+     * @param pet
+     * 			pet is the pet to be adopted
+     * @return
+     * 			returns true if successful and false if not
+     */
     public boolean adoptPet(Pet pet) {
         if (pet != null && !pet.isAdopted()) {
             pet.setAdopted(true);
@@ -201,15 +270,21 @@ public class Pet_Model {
         }
         return false;
     }
-
+    /**
+     * sorts pet by name
+     */
     public void sortPetsByName() {
         shelter.sortPets();
     }
-
+    /**
+     * sorts pets by age
+     */
     public void sortPetsByAge() {
         shelter.sortPets(new adopt_me2.others.Pet_Comparator_Age());
     }
-
+    /**
+     * sorts pet by species
+     */
     public void sortPetsBySpecies() {
         shelter.sortPets(new adopt_me2.others.Pet_Comparator_Species());
     }
