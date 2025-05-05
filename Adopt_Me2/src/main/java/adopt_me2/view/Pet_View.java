@@ -11,6 +11,9 @@ import javax.swing.table.DefaultTableModel;
 
 import adopt_me2.model.Pet;
 
+/**
+ * 
+ */
 public class Pet_View {
     private JFrame backFrame;
     private JTable petsTable;
@@ -18,6 +21,9 @@ public class Pet_View {
     private JButton addButton, removeButton, adoptButton, detailsButton, saveButton;
     private JComboBox<String> comboBoxSort;
 
+    /**
+     * 
+     */
     public Pet_View() {
 
         backFrame = new JFrame("Adopt Me - Pet Adoption System");
@@ -25,7 +31,7 @@ public class Pet_View {
         backFrame.setSize(1000, 1000);
         backFrame.setLayout(new BorderLayout());
 
-
+        //creates table
         String[] columnNames = {"ID", "Name", "Type", "Species", "Age", "Adopted"};
         tableModel = new DefaultTableModel(columnNames, 0);
         petsTable = new JTable(tableModel);
@@ -36,7 +42,7 @@ public class Pet_View {
         JPanel panel = new JPanel();
         panel.setLayout(new FlowLayout());
 
-
+        //creates button objects
         addButton = new JButton("Add");
         removeButton = new JButton("Remove");
         adoptButton = new JButton("Adopt");
@@ -47,7 +53,7 @@ public class Pet_View {
         JLabel sortLabel = new JLabel("Sort by:");
         comboBoxSort = new JComboBox<>(new String[]{"Name", "Age", "Species"});
 
-
+        //adds buttons to panel
         panel.add(addButton);
         panel.add(removeButton);
         panel.add(adoptButton);
@@ -59,12 +65,18 @@ public class Pet_View {
 
         backFrame.add(panel, BorderLayout.SOUTH);
     }
-
+    //makes window visible
+    /**
+     * 
+     */
     public void display() 
     {
         backFrame.setVisible(true);
     }
-
+    //method for updating pet Table
+    /**
+     * @param pets
+     */
     public void updatePetTable(List<Pet> pets) 
     {
 
@@ -94,31 +106,52 @@ public class Pet_View {
             tableModel.addRow(rowData);
         }
     }
-
+    //Action listeners to give buttons functionality 
+    /**
+     * @param listener
+     */
     public void setAddButtonListener(ActionListener listener) {
         addButton.addActionListener(listener);
     }
 
+    /**
+     * @param listener
+     */
     public void setRemoveButtonListener(ActionListener listener) {
         removeButton.addActionListener(listener);
     }
 
+    /**
+     * @param listener
+     */
     public void setAdoptButtonListener(ActionListener listener) {
         adoptButton.addActionListener(listener);
     }
 
+    /**
+     * @param listener
+     */
     public void setDetailsButtonListener(ActionListener listener) {
         detailsButton.addActionListener(listener);
     }
 
+    /**
+     * @param listener
+     */
     public void setSaveButtonListener(ActionListener listener) {
         saveButton.addActionListener(listener);
     }
 
+    /**
+     * @param listener
+     */
     public void setSortComboBoxListener(ActionListener listener) {
         comboBoxSort.addActionListener(listener);
     }
-
+    //method for getting pet id
+    /**
+     * @return
+     */
     public int getSelectedPetId() 
     {
         int selectedRow = petsTable.getSelectedRow();
@@ -128,23 +161,35 @@ public class Pet_View {
         }
         return -1;
     }
-    
+    //returns the selected row
+    /**
+     * @return
+     */
     public int getSelectedRow() 
     {
         return petsTable.getSelectedRow();
     }
-
+    //returns sorted items
+    /**
+     * @return
+     */
     public String getSelectedSortCriteria() 
     {
         return (String) comboBoxSort.getSelectedItem();
     }
 
-    // Dialog methods
+    //returns message
+    /**
+     * @param message
+     */
     public void showMessage(String message) 
     {
         JOptionPane.showMessageDialog(backFrame, message);
     }
-
+    //prints text into window view
+    /**
+     * @return
+     */
     public String[] showAddDialog() 
     {
         JTextField nameField = new JTextField();
@@ -175,7 +220,10 @@ public class Pet_View {
         }
         return null;
     }
-
+    //prints information about pets
+    /**
+     * @param pet
+     */
     public void showPetDetailsDialog(Pet pet) 
     {
         if (pet == null) {
