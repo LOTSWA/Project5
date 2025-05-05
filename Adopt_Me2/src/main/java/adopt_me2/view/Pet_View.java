@@ -12,6 +12,9 @@ import javax.swing.table.DefaultTableModel;
 import adopt_me2.model.Pet;
 
 
+/**
+ * 
+ */
 public class Pet_View {
     private JFrame backFrame;
     private JTable petsTable;
